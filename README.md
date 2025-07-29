@@ -10,24 +10,24 @@ The following diagram illustrates the architecture of the system:
 graph TD
     subgraph "GitHub & CI/CD"
         A[Code Push to Main] --> B{GitHub Actions CI/CD};
-        B -- Builds & Pushes --> D[Amazon ECR Repository];
-        B -- Deploys --> E{Terraform Apply};
+        B -- "Builds & Pushes" --> D[Amazon ECR Repository];
+        B -- "Deploys" --> E{Terraform Apply};
     end
 
     subgraph "AWS Cloud"
-        D -- Deploys to --> F[AWS Lambda Function];
-        E -- Provisions --> G{AWS Resources};
+        D -- "Deploys to" --> F[AWS Lambda Function];
+        E -- "Provisions" --> G{AWS Resources};
         
         subgraph "LLM-Powered Pipeline"
-            F -- 1. Fetches Cost History --> H[AWS Cost Explorer];
-            F -- 2. Asks "Is this an anomaly?" --> I[Amazon Bedrock LLM - Call 1];
-            I -- 3. "YES" --> F;
-            F -- 4. Fetches Cost Breakdown --> H;
-            F -- 5. Asks "Why did this happen?" --> J[Amazon Bedrock LLM - Call 2];
-            J -- 6. Returns Analysis --> F;
+            F -- "1. Fetches Cost History" --> H[AWS Cost Explorer];
+            F -- "2. Asks: Is this an anomaly?" --> I[Amazon Bedrock LLM - Call 1];
+            I -- "3. YES" --> F;
+            F -- "4. Fetches Cost Breakdown" --> H;
+            F -- "5. Asks: Why did this happen?" --> J[Amazon Bedrock LLM - Call 2];
+            J -- "6. Returns Analysis" --> F;
         end
 
-        F -- 7. Sends Intelligent Alert --> K[Slack Channel];
+        F -- "7. Sends Intelligent Alert" --> K[Slack Channel];
     end
 
     style F fill:#FF9900,stroke:#333,stroke-width:2px
